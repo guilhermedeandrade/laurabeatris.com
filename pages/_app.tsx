@@ -7,17 +7,23 @@ import { theme } from 'styles/theme'
 import { global } from 'styles/global'
 import { configSEO } from 'next-seo.config'
 import { Layout } from 'components/Layout'
+import { Chakra } from 'providers/Chakra'
+import { ChakraProps } from 'providers/Chakra/types'
 
-export default function MyApp ({ Component, pageProps }: AppProps) {
+type MyAppProps = AppProps & Pick<ChakraProps, 'cookies'>
+
+export default function MyApp ({ Component, pageProps, cookies }: MyAppProps) {
   return (
     <>
       <DefaultSeo {...configSEO} />
-      <ChakraProvider theme={theme} resetCSS>
+      <Chakra cookies={cookies} theme={theme}>
         <Global styles={global} />
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </ChakraProvider>
+      </Chakra>
     </>
   )
 }
+
+export { getServerSideProps } from 'providers/Chakra'
